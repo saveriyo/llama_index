@@ -98,6 +98,12 @@ class ChatMemoryBuffer(BaseMemory):
                 # we need to remove the assistant message too
                 message_count -= 1
 
+            if self.chat_history[-message_count].role == MessageRole.TOOL:
+                # we cannot have a tool message at the start of the chat history
+                # if after removal of the first, we have a tool message,
+                # we need to remove the tool message too
+                message_count -= 1
+
             message_str = " ".join(
                 [str(m.content) for m in self.chat_history[-message_count:]]
             )
